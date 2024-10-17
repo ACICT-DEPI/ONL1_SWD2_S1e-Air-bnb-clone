@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { differenceInCalendarDays } from "date-fns";
-import axios from "axios";
+import toast from "react-hot-toast";
+
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import { AddBooking } from "../api/booking/bookingApi";
 
 const BookingBox = ({ place }) => {
   const navigate = useNavigate();
@@ -35,10 +37,10 @@ const BookingBox = ({ place }) => {
       price: numberOFnights * place.price,
     };
 
-    axios
-      .post("/booking", data)
+    AddBooking(data)
       .then((res) => {
         console.log(res.data);
+        toast.success("Booking successful");
         navigate("/account/bookings");
       })
       .catch((err) => {

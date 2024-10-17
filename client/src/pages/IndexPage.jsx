@@ -1,15 +1,13 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getPlaces } from "../api/place/placeApi";
 
 const IndexPage = () => {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
-    axios
-      .get("/places")
-      .then((res) => {
-        console.log(res.data);
-        setPlaces(res.data);
+    getPlaces()
+      .then((data) => {
+        setPlaces(data);
       })
       .catch((err) => console.log(err));
   }, []);

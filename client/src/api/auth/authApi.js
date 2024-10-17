@@ -43,16 +43,3 @@ export async function getProfile() {
     throw error.response.statusText;
   }
 }
-
-export async function uploadPhotos(formData) {
-  try {
-    const response = await axios.post("/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response.statusText;
-  }
-}

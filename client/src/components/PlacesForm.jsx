@@ -3,8 +3,14 @@ import Input from "../ui/Input";
 import Perks from "../components/Perks";
 import PhotosUploader from "../components/PhotosUploader";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  addPlace,
+  editPlace,
+  getPlace,
+  uploadPhotoByLink,
+} from "../api/place/placeApi";
+import toast from "react-hot-toast";
 
 const PlacesForm = () => {
   const { id } = useParams();
@@ -24,10 +30,8 @@ const PlacesForm = () => {
   useEffect(() => {
     if (!id) return;
 
-    axios
-      .get(`places/${id}`)
-      .then((res) => {
-        const { data } = res;
+    getPlace(id)
+      .then((data) => {
         setTitle(data.title);
         setAddress(data.address);
         setAddedPhotos(data.photos);
@@ -38,7 +42,6 @@ const PlacesForm = () => {
         setMaxGuests(data.maxGuests);
         setExtraInfo(data.extraInfo);
         setPrice(data.price);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -47,10 +50,7 @@ const PlacesForm = () => {
 
   function addPhotoByLink(e) {
     e.preventDefault();
-    axios
-      .post("/upload-by-link", {
-        link: photoLink,
-      })
+    uploadPhotoByLink(photoLink)
       .then((res) => {
         console.log(res);
 
@@ -78,26 +78,24 @@ const PlacesForm = () => {
     };
     if (id) {
       // edit
-      axios
-        .put("/places", { ...data, id })
-        .then((data) => {
-          console.log(data);
+      editPlace({ ...data, id })
+        .then(() => {
+          toast.success("Place updated");
           navigate("/account/places");
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          toast.error("Error updating place");
         });
     } else {
       // new place
 
-      axios
-        .post("/places", data)
-        .then((data) => {
-          console.log(data);
+      addPlace(data)
+        .then(() => {
+          toast.success("Place added");
           navigate("/account/places");
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          toast.error("Error adding place");
         });
     }
   }

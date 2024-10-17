@@ -1,21 +1,25 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AddressLink from "../components/AddressLink";
 import Gallery from "../components/Gallery";
 import BookingDate from "../components/BookingDate";
+import { getBookings } from "../api/booking/bookingApi";
 
 const BookingPage = () => {
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   useEffect(() => {
     if (id) {
-      axios.get("/bookings").then((response) => {
-        const foundBooking = response.data.find(({ _id }) => _id === id);
-        if (foundBooking) {
-          setBooking(foundBooking);
-        }
-      });
+      getBookings()
+        .then((data) => {
+          const foundBooking = data.find(({ _id }) => _id === id);
+          if (foundBooking) {
+            setBooking(foundBooking);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [id]);
 

@@ -1,5 +1,5 @@
 import UploadIcon from "../ui/icons/UploadIcon";
-import { uploadPhotos } from "../api/authApi";
+import { uploadPhotos } from "../api/place/placeApi";
 import TrashIcon from "../ui/icons/TrashIcon";
 import StarIcon from "../ui/icons/StarIcon";
 import FilledStarIcon from "../ui/icons/FilledStarIcon";
@@ -11,10 +11,8 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
     for (let i = 0; i < files.length; i++) {
       formData.append("photo", files[i]);
     }
-    console.log(formData);
     uploadPhotos(formData)
       .then((data) => {
-        console.log(data);
         setAddedPhotos([...addedPhotos, ...data]);
       })
       .catch((err) => {

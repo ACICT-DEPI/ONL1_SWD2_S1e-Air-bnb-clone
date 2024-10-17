@@ -1,16 +1,14 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BookingDate from "../components/BookingDate";
+import { getBookings } from "../api/booking/bookingApi";
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
   useEffect(() => {
-    axios
-      .get("/bookings")
-      .then((res) => {
-        console.log(res.data);
-        setBookings(res.data);
+    getBookings()
+      .then((data) => {
+        setBookings(data);
       })
       .catch((err) => {
         console.log(err);

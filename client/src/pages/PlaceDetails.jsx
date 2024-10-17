@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BookingBox from "../components/BookingBox";
 import Gallery from "../components/Gallery";
 import AddressLink from "../components/AddressLink";
+import { getPlace } from "../api/place/placeApi";
 
 const PlaceDetails = () => {
   const { id } = useParams();
@@ -11,10 +11,8 @@ const PlaceDetails = () => {
   useEffect(() => {
     if (!id) return;
 
-    axios
-      .get(`/places/${id}`)
+    getPlace(id)
       .then((res) => {
-        console.log(res.data);
         setPlace(res.data);
       })
       .catch((err) => {

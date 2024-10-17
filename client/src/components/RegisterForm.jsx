@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../api/authApi";
+import { registerUser } from "../api/auth/authApi";
+import toast from "react-hot-toast";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -14,12 +15,12 @@ const RegisterForm = () => {
       return;
     }
     registerUser({ name, email, password })
-      .then((data) => {
-        alert("User registered successfully", data);
+      .then(() => {
+        toast.success("User registered successfully");
         navigate("/login");
       })
-      .catch((error) => {
-        alert("Error registering user", error);
+      .catch(() => {
+        toast.error("Error registering user");
       });
   };
   return (

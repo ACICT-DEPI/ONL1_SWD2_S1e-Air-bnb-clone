@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../api/authApi";
+import { loginUser } from "../api/auth/authApi";
 import { useUser } from "../context/UserContext";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -18,12 +19,11 @@ const LoginForm = () => {
     loginUser({ email, password })
       .then((user) => {
         setUser(user);
-        console.log(user);
-        alert("User logged in successfully");
+        toast.success(`Welcome back, ${user.name}`);
         navigate("/", { replace: true });
       })
-      .catch((error) => {
-        alert(`Error logging in ${error.data}`);
+      .catch(() => {
+        toast.error(`password or email is incorrect`);
       });
   };
   return (

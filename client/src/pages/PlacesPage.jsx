@@ -1,18 +1,15 @@
 import { Link } from "react-router-dom";
 import PlusIcon from "../ui/icons/PlusIcon";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getUserPlaces } from "../api/place/placeApi";
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("/user-places")
-      .then((res) => {
-        console.log(res.data);
-
-        setPlaces(res.data);
+    getUserPlaces()
+      .then((data) => {
+        setPlaces(data);
       })
       .catch((err) => {
         console.log(err);

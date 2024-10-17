@@ -1,42 +1,58 @@
-import { Link } from "react-router-dom";
-import PaperPlaneIcon from "../ui/icons/PaperPlaneIcon";
-import SearchIcon from "../ui/icons/SearchIcon";
+import { Link, useNavigate } from "react-router-dom";
 import UserIcon from "../ui/icons/UserIcon";
 import { useUser } from "../context/UserContext";
+import { logoutUser } from "../api/auth/authApi";
+import toast from "react-hot-toast";
 
 const Header = () => {
-  const { user } = useUser();
+  const navigate = useNavigate();
+  const { user, setUser } = useUser();
   return (
     <header className="flex justify-between">
       <Link to="/" className="flex items-center gap-1">
-        <PaperPlaneIcon className={"size-8 -rotate-90"} />
-        <span className="font-bold text-xl">airbnb</span>
+        <span className="font-bold text-3xl uppercase">Core</span>
       </Link>
 
-      <nav className="flex gap-2 items-center border border-gray-300 rounded-full py-2 px-4 shadow-md">
-        <ul className="flex gap-2">
-          <li>Anywhere</li>
-          <span className="border-l border-gray-300"></span>
-          <li>Any week</li>
-          <span className="border-l border-gray-300"></span>
-          <li>Add guests</li>
-        </ul>
-        <button className="bg-primary text-white p-1 rounded-full">
-          <SearchIcon className={"size-5"} />
-        </button>
-      </nav>
-
-      <Link
-        to={user ? "/account" : "/login"}
-        className="flex gap-2 items-center border border-gray-300 rounded-full py-2 px-4"
-      >
-        {/* <BarsIcon className={"size-6"} /> */}
-        <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden">
-          <UserIcon className="size-6 relative top-1" />
+      {!user && (
+        <div className="flex  items-center border border-gray-300 rounded-full overflow-hidden">
+          <Link
+            to={"/login"}
+            className="py-2 px-4 border-r hover:bg-primary hover:text-white transition-all"
+          >
+            Login
+          </Link>
+          <Link
+            to={"register"}
+            className="py-2 px-4 hover:bg-primary hover:text-white transition-all"
+          >
+            Sign up
+          </Link>
         </div>
-        {!!user && <div>{user.name}</div>}
-        {!user ? "Login" : ""}
-      </Link>
+      )}
+
+      {!!user && (
+        <div className="flex  items-center border border-gray-300 rounded-full overflow-hidden">
+          <Link
+            to={"/login"}
+            className="flex items-center gap-1 py-2 px-4 border-r hover:bg-primary hover:text-white transition-all"
+          >
+            <UserIcon className="size-5" />
+            {user.name}
+          </Link>
+          <div
+            onClick={() => {
+              logoutUser().then(() => {
+                toast.success("Logged out successfully");
+                setUser(null);
+                navigate("/login");
+              });
+            }}
+            className="py-2 px-4 cursor-pointer hover:bg-primary hover:text-white transition-all"
+          >
+            logout
+          </div>
+        </div>
+      )}
     </header>
   );
 };
