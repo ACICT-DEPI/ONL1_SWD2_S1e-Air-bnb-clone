@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth/authApi";
 import toast from "react-hot-toast";
 const RegisterForm = () => {
+  const { register } = useForm();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { loginUser } from "../api/auth/authApi";
 import { useUser } from "../context/UserContext";
 import toast from "react-hot-toast";
+import Spinner from "../ui/Spinner";
 
 const LoginForm = () => {
+  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, formState } = useForm();
+  const { errors } = formState;
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const { setUser } = useUser();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
-    loginUser({ email, password })
+  const onSubmit = (data) => {
+    setLoading(true);
+    loginUser(data)
       .then((user) => {
         setUser(user);
         toast.success(`Welcome back, ${user.name}`);
@@ -24,24 +23,40 @@ const LoginForm = () => {
       })
       .catch(() => {
         toast.error(`password or email is incorrect`);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
-    <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+    <form className="max-w-md mx-auto" onSubmit={handleSubmit(onSubmit)}>
       <input
         type="email"
+        id="email"
         placeholder="your@email.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
         autoComplete="email"
+        {...register("email", { required: "Email is required" })}
       />
+      {errors?.email && (
+        <span className="text-red-500">{errors.email.message}</span>
+      )}
       <input
         type="password"
         placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        {...register("password", { required: "Password is required" })}
       />
-      <button className="primary mt-1">login</button>
+      {errors?.password && (
+        <span className="text-red-500">{errors.password.message}</span>
+      )}
+      <button className="primary mt-1 text-center" disabled={loading}>
+        {loading ? (
+          <span className="w-full flex items-center justify-center">
+            <Spinner className={"size-6"} />
+          </span>
+        ) : (
+          "Login"
+        )}
+      </button>
       <div className="text-center py-2 text-gray-500">
         Don&#39;t have ac account yet?{" "}
         <Link to={"/register"} className="underline text-black">
