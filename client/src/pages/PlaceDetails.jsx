@@ -12,8 +12,8 @@ const PlaceDetails = () => {
     if (!id) return;
 
     getPlace(id)
-      .then((res) => {
-        setPlace(res.data);
+      .then((data) => {
+        setPlace(data);
       })
       .catch((err) => {
         console.log(err);
