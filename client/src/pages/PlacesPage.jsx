@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import PlusIcon from "../ui/PlusIcon";
+import PlusIcon from "../ui/icons/PlusIcon";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

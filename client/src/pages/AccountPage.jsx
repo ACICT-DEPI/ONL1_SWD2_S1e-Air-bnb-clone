@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { logoutUser } from "../api/authApi";
+import toast from "react-hot-toast";
 
 const AccountPage = () => {
   const navigate = useNavigate();
@@ -12,8 +13,8 @@ const AccountPage = () => {
 
   const handleLogout = () => {
     logoutUser()
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        toast.success("Logged out successfully");
         navigate("/", { replace: true });
         setUser(null);
       })

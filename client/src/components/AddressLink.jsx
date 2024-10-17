@@ -1,4 +1,4 @@
-import MapIcon from "../ui/MapIcon";
+import MapIcon from "../ui//icons/MapIcon";
 
 const AddressLink = ({ children }) => {
   return (

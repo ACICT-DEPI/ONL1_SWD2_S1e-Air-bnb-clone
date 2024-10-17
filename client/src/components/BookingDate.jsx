@@ -1,6 +1,6 @@
 import { differenceInCalendarDays, format } from "date-fns";
-import NightIcon from "../ui/NightIcon";
-import CalenderIcon from "../ui/CalenderIcon";
+import NightIcon from "../ui/icons/NightIcon";
+import CalenderIcon from "../ui/icons/CalenderIcon";
 
 const BookingDate = ({ booking, className }) => {
   return (

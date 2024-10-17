@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
+import { Toaster } from "react-hot-toast";
 import IndexPage from "./pages/IndexPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -18,8 +18,8 @@ import BookingPage from "./pages/BookingPage.jsx";
 
 function App() {
   return (
-    <BrowserRouter>
-      <UserContextProvider>
+    <UserContextProvider>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<IndexPage />} />
@@ -37,8 +37,27 @@ function App() {
             <Route path="*" element={<div>Not found</div>} />
           </Route>
         </Routes>
-      </UserContextProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+      <Toaster
+        position="top-right"
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+          // Define default options
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 3000,
+          },
+          style: {
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+          },
+        }}
+      />
+    </UserContextProvider>
   );
 }
 

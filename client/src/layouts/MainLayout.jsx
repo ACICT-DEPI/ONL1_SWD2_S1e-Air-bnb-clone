@@ -3,7 +3,7 @@ import Header from "../components/Header";
 
 const MainLayout = () => {
   return (
-    <div className="py-4 px-8 flex flex-col min-h-screen">
+    <div className="container mx-auto py-4 px-8 flex flex-col min-h-screen">
       <Header />
       <Outlet />
     </div>

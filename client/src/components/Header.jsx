@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import BarsIcon from "../ui/BarsIcon";
-import PaperPlaneIcon from "../ui/PaperPlaneIcon";
-import SearchIcon from "../ui/SearchIcon";
-import UserIcon from "../ui/UserIcon";
+import PaperPlaneIcon from "../ui/icons/PaperPlaneIcon";
+import SearchIcon from "../ui/icons/SearchIcon";
+import UserIcon from "../ui/icons/UserIcon";
 import { useUser } from "../context/UserContext";
 
 const Header = () => {

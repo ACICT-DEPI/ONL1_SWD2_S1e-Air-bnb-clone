@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import UserIcon from "../ui/UserIcon";
-import ListIcon from "../ui/ListIcon";
-import BuildingIcon from "../ui/BuildingIcon";
+import UserIcon from "../ui/icons/UserIcon";
+import ListIcon from "../ui/icons/ListIcon";
+import BuildingIcon from "../ui/icons/BuildingIcon";
 import { style } from "../utils/helper";
 
 const NavLinks = () => {

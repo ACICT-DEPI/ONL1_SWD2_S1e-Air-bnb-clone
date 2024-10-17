@@ -1,9 +1,9 @@
 import CheckBoxInput from "../ui/CheckBoxInput";
-import WifiIcon from "../ui/WifiIcon";
-import TruckIcon from "../ui/TruckIcon";
-import TvIcon from "../ui/TvIcon";
-import FaceSimleIcon from "../ui/FaceSimleIcon";
-import GymIcon from "../ui/GymIcon";
+import WifiIcon from "../ui/icons/WifiIcon";
+import TruckIcon from "../ui/icons/TruckIcon";
+import TvIcon from "../ui/icons/TvIcon";
+import FaceSimleIcon from "../ui/icons/FaceSimleIcon";
+import GymIcon from "../ui/icons/GymIcon";
 
 const perks = [
   { id: "wifi", title: "Wifi", icon: <WifiIcon className={"size-6"} /> },

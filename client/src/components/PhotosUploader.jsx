@@ -1,8 +1,8 @@
-import UploadIcon from "../ui/UploadIcon";
+import UploadIcon from "../ui/icons/UploadIcon";
 import { uploadPhotos } from "../api/authApi";
-import TrashIcon from "../ui/TrashIcon";
-import StarIcon from "../ui/StarIcon";
-import FilledStarIcon from "../ui/FilledStarIcon";
+import TrashIcon from "../ui/icons/TrashIcon";
+import StarIcon from "../ui/icons/StarIcon";
+import FilledStarIcon from "../ui/icons/FilledStarIcon";
 
 const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   function uploadPhoto(e) {

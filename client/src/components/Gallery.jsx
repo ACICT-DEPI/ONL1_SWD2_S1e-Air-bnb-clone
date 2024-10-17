@@ -1,6 +1,6 @@
 import { useState } from "react";
-import PhotoIcon from "../ui/PhotoIcon";
-import CloseIcon from "../ui/CloseIcon";
+import PhotoIcon from "../ui/icons/PhotoIcon";
+import CloseIcon from "../ui/icons/CloseIcon";
 
 const Gallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
