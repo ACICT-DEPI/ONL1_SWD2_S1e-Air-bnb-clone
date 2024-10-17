@@ -33,7 +33,7 @@ const Header = () => {
       {!!user && (
         <div className="flex  items-center border border-gray-300 rounded-full overflow-hidden">
           <Link
-            to={"/login"}
+            to={"/account"}
             className="flex items-center gap-1 py-2 px-4 border-r hover:bg-primary hover:text-white transition-all"
           >
             <UserIcon className="size-5" />
