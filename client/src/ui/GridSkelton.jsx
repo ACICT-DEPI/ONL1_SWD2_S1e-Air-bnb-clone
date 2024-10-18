@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Skeleton = ({ className }) => (
   <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />
 );
 
 const GridSkelton = () => {
-  const [guests, setGuests] = useState(1);
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   // Simulate loading

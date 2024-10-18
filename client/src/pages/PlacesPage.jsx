@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import PlusIcon from "../ui/icons/PlusIcon";
 import { useEffect, useState } from "react";
 import { getUserPlaces } from "../api/place/placeApi";
+import SkeletonLoader from "../ui/SkeletonLoader";
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
@@ -19,6 +20,9 @@ const PlacesPage = () => {
         setLoading(false);
       });
   }, []);
+  if (loading) return <SkeletonLoader />;
+  if (places.length === 0)
+    return <div className="text-3xl text-center">No places, Add one</div>;
   return (
     <div>
       <div className="text-center">
@@ -30,7 +34,7 @@ const PlacesPage = () => {
           Add new place
         </Link>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 flex flex-col gap-2">
         {places.length > 0 &&
           places.map((place) => (
             <Link

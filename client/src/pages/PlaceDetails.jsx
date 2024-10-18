@@ -5,7 +5,6 @@ import Gallery from "../components/Gallery";
 import AddressLink from "../components/AddressLink";
 import { getPlace } from "../api/place/placeApi";
 import GridSkelton from "../ui/GridSkelton";
-import { set } from "date-fns";
 
 const PlaceDetails = () => {
   const { id } = useParams();
@@ -28,6 +27,8 @@ const PlaceDetails = () => {
   }, [id]);
 
   if (loading) return <GridSkelton />;
+  if (!place)
+    return <div className="text-3xl text center">Booking not found</div>;
   return (
     <div className="mt-4 bg-gray-100 -mx-8 pt-8 px-8">
       <h1 className="text-3xl">{place.title}</h1>
