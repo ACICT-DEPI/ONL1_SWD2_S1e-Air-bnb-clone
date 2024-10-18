@@ -2,7 +2,6 @@ import Label from "../ui/Label";
 import Input from "../ui/Input";
 import Perks from "../components/Perks";
 import PhotosUploader from "../components/PhotosUploader";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {

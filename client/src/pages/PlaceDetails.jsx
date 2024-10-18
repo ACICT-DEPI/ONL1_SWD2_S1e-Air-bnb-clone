@@ -40,10 +40,8 @@ const PlaceDetails = () => {
             <h2 className="font-semibold text-2xl">Description</h2>
             {place.description}
           </div>
-          <p className="text-lg font-semibold">Check-in: {place.checkIn} PM</p>
-          <p className="text-lg font-semibold">
-            Check-out: {place.checkOut} PM
-          </p>
+          <p className="text-lg font-semibold">Check-in: {place.checkIn} </p>
+          <p className="text-lg font-semibold">Check-out: {place.checkOut}</p>
           <p className="text-lg font-semibold">
             max number of guests: {place.maxGuests}
           </p>
