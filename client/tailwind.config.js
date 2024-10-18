@@ -6,6 +6,11 @@ export default {
       colors: {
         primary: "#F5385D",
       },
+      keyframes: {
+        shimmer: {
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
     },
   },
   plugins: [],

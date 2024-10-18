@@ -5,6 +5,7 @@ import { getUserPlaces } from "../api/place/placeApi";
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserPlaces()
@@ -13,6 +14,9 @@ const PlacesPage = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
   return (

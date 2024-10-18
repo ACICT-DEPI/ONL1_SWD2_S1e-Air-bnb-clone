@@ -4,49 +4,58 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth/authApi";
 import toast from "react-hot-toast";
+import Error from "../ui/Error";
+import Spinner from "../ui/Spinner";
 const RegisterForm = () => {
-  const { register } = useForm();
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, formState } = useForm();
+  const { errors } = formState;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!name || !email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
-    registerUser({ name, email, password })
+  const onSubmit = (data) => {
+    setLoading(true);
+    registerUser(data)
       .then(() => {
         toast.success("User registered successfully");
         navigate("/login");
       })
       .catch(() => {
         toast.error("Error registering user");
-      });
+      })
+      .finally(() => setLoading(false));
   };
   return (
-    <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+    <form className="max-w-md mx-auto" onSubmit={handleSubmit(onSubmit)}>
       <input
         type="text"
         placeholder="your name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        {...register("name", { required: "name is required" })}
       />
+      {errors?.name && <Error errors={errors.name.message} />}
+
       <input
         type="email"
         placeholder="your@email.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        {...register("email", { required: "Email is required" })}
       />
+      {errors?.email && <Error errors={errors.email.message} />}
+
       <input
         type="password"
         placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        {...register("password", { required: "password is required" })}
       />
-      <button className="primary mt-1">register</button>
+      {errors?.password && <Error errors={errors.password.message} />}
+
+      <button className="primary mt-1">
+        {loading ? (
+          <span className="w-full flex items-center justify-center">
+            <Spinner className={"size-6"} />
+          </span>
+        ) : (
+          "Register"
+        )}
+      </button>
       <div className="text-center py-2 text-gray-500">
         Already a member?{" "}
         <Link to={"/login"} className="underline text-black">

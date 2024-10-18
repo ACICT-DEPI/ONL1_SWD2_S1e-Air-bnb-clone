@@ -2,6 +2,7 @@ import Label from "../ui/Label";
 import Input from "../ui/Input";
 import Perks from "../components/Perks";
 import PhotosUploader from "../components/PhotosUploader";
+import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -15,6 +16,7 @@ import toast from "react-hot-toast";
 const PlacesForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [photoLink, setPhotoLink] = useState("");

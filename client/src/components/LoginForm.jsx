@@ -5,6 +5,7 @@ import { loginUser } from "../api/auth/authApi";
 import { useUser } from "../context/UserContext";
 import toast from "react-hot-toast";
 import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -37,17 +38,13 @@ const LoginForm = () => {
         autoComplete="email"
         {...register("email", { required: "Email is required" })}
       />
-      {errors?.email && (
-        <span className="text-red-500">{errors.email.message}</span>
-      )}
+      {errors?.email && <Error errors={errors.email.message} />}
       <input
         type="password"
         placeholder="password"
         {...register("password", { required: "Password is required" })}
       />
-      {errors?.password && (
-        <span className="text-red-500">{errors.password.message}</span>
-      )}
+      {errors?.password && <Error errors={errors.password.message} />}
       <button className="primary mt-1 text-center" disabled={loading}>
         {loading ? (
           <span className="w-full flex items-center justify-center">

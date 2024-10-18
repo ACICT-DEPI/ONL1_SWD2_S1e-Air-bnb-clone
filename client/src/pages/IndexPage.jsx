@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPlaces } from "../api/place/placeApi";
+import Skelton from "../ui/Skelton";
 
 const IndexPage = () => {
   const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getPlaces()
       .then((data) => {
         setPlaces(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   }, []);
   return (
     <div className="grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-8">
+      {loading &&
+        Array.from({ length: 8 }).map((_, index) => <Skelton key={index} />)}
       {places.length > 0 &&
         places.map((place) => (
           <Link to={`/place/${place._id}`} key={place._id}>
@@ -31,6 +36,9 @@ const IndexPage = () => {
             </div>
           </Link>
         ))}
+      {places.length === 0 && !loading && (
+        <div className="text-2xl text-center">No places found</div>
+      )}
     </div>
   );
 };
