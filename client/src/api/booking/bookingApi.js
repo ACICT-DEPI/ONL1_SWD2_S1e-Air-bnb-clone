@@ -17,3 +17,12 @@ export async function AddBooking(booking) {
     throw error.response.statusText;
   }
 }
+
+export async function deleteBooking(id) {
+  try {
+    const response = await axios.delete(`/booking/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error.response.statusText;
+  }
+}

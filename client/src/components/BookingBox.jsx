@@ -5,9 +5,11 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { AddBooking } from "../api/booking/bookingApi";
+import { useForm } from "react-hook-form";
 
 const BookingBox = ({ place }) => {
   const navigate = useNavigate();
+  const { register, handleSubmit, formState } = useForm();
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(1);

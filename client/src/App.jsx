@@ -15,6 +15,8 @@ import BookingsPage from "./pages/BookingsPage.jsx";
 import ProfileLayout from "./layouts/ProfileLayout.jsx";
 import PlaceDetails from "./pages/PlaceDetails.jsx";
 import BookingPage from "./pages/BookingPage.jsx";
+import ProtectedRoute from "./pages/ProtectedRoute.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 function App() {
   return (
@@ -25,7 +27,14 @@ function App() {
             <Route index element={<IndexPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
-            <Route path="account" element={<ProfileLayout />}>
+            <Route
+              path="account"
+              element={
+                <ProtectedRoute>
+                  <ProfileLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<AccountPage />} />
               <Route path="places" element={<PlacesPage />} />
               <Route path="bookings" element={<BookingsPage />} />
@@ -34,7 +43,7 @@ function App() {
               <Route path="places/:id" element={<PlacePageForm />} />
             </Route>
             <Route path="place/:id" element={<PlaceDetails />} />
-            <Route path="*" element={<div>Not found</div>} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>

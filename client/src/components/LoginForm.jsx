@@ -20,7 +20,7 @@ const LoginForm = () => {
       .then((user) => {
         setUser(user);
         toast.success(`Welcome back, ${user.name}`);
-        navigate("/", { replace: true });
+        navigate("/account", { replace: true });
       })
       .catch(() => {
         toast.error(`password or email is incorrect`);

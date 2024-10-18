@@ -202,6 +202,29 @@ app.get("/bookings", async (req, res) => {
   });
 });
 
+// delete booking
+app.delete("/booking/:id", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    const { id } = req.params;
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (err, userData) => {
+      if (err) throw err;
+      const bookingDoc = await Booking.findById(id);
+      if (!bookingDoc) {
+        return res.status(404).json({ error: "Booking not found" });
+      }
+      if (bookingDoc.user.toString() != userData.id) {
+        res.status(401).json("not authorized");
+        return;
+      }
+      await Booking.deleteOne({ _id: id });
+      res.json({ message: "Booking deleted successfully" });
+    });
+  } catch (err) {
+    res.status(442).json("not authorized");
+  }
+});
+
 app.listen(3000, () => {
   console.log("server started");
 });
