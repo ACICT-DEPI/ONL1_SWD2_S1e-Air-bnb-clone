@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import PlusIcon from "../ui/icons/PlusIcon";
 import { useEffect, useState } from "react";
-import { getUserPlaces } from "../api/place/placeApi";
+import { deletePlace, getUserPlaces } from "../api/place/placeApi";
 import SkeletonLoader from "../ui/SkeletonLoader";
+import toast from "react-hot-toast";
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
@@ -20,6 +21,18 @@ const PlacesPage = () => {
         setLoading(false);
       });
   }, []);
+
+  const handleDelete = (id) => {
+    deletePlace(id)
+      .then(() => {
+        toast.success("Place deleted successfully");
+        setPlaces((prev) => prev.filter((place) => place._id !== id));
+      })
+      .catch(() => {
+        toast.error("Error deleting place");
+      });
+  };
+
   if (loading) return <SkeletonLoader />;
   if (places.length === 0)
     return <div className="text-3xl text-center">No places, Add one</div>;
@@ -37,12 +50,11 @@ const PlacesPage = () => {
       <div className="mt-4 flex flex-col gap-2">
         {places.length > 0 &&
           places.map((place) => (
-            <Link
-              to={`/account/places/${place._id}`}
-              className="flex gap-2 bg-gray-100 p-4 rounded-2xl"
+            <div
+              className="flex gap-4 justify-between bg-gray-100 p-4 rounded-2xl max-h-[200px] overflow-hidden"
               key={place._id}
             >
-              <div className="flex size-32 shrink-0 bg-gray-300 rounded-sm overflow-hidden">
+              <div className="flex size-40  shrink-0 bg-gray-300 rounded-sm overflow-hidden">
                 {place.photos.length > 0 && (
                   <img
                     className="object-cover w-full h-full"
@@ -51,11 +63,25 @@ const PlacesPage = () => {
                   />
                 )}
               </div>
-              <div>
+              <div className="grow">
                 <h2 className="text-xl font-semibold">{place.title}</h2>
                 <p className="text-sm mt-2">{place.description}</p>
               </div>
-            </Link>
+              <div className="me-6 flex gap-2 items-end">
+                <Link
+                  to={`/account/places/${place._id}`}
+                  className="bg-green-500 rounded-2xl px-4 py-2 text-white "
+                >
+                  Edit
+                </Link>
+                <button
+                  className="bg-primary rounded-2xl px-4 py-2 text-white "
+                  onClick={() => handleDelete(place._id)}
+                >
+                  delete
+                </button>
+              </div>
+            </div>
           ))}
       </div>
     </div>

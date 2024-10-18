@@ -225,6 +225,29 @@ app.delete("/booking/:id", async (req, res) => {
   }
 });
 
+// delete place
+app.delete("/places/:id", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    const { id } = req.params;
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (err, userData) => {
+      if (err) throw err;
+      const placeDoc = await Place.findById(id);
+      if (!placeDoc) {
+        return res.status(404).json({ error: "Place not found" });
+      }
+      if (placeDoc.owner.toString() != userData.id) {
+        res.status(401).json("not authorized");
+        return;
+      }
+      await Place.deleteOne({ _id: id });
+      res.json({ message: "Place deleted successfully" });
+    });
+  } catch (err) {
+    res.status(442).json("not authorized");
+  }
+});
+
 app.listen(3000, () => {
   console.log("server started");
 });

@@ -68,3 +68,12 @@ export async function editPlace(data) {
     throw error.response.statusText;
   }
 }
+
+export async function deletePlace(id) {
+  try {
+    const response = await axios.delete(`/places/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error.response.statusText;
+  }
+}
