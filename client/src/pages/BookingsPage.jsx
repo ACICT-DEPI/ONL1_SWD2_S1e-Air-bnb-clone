@@ -36,7 +36,7 @@ const BookingsPage = () => {
   console.log(bookings);
   if (loading) return <SkeletonLoader />;
 
-  if (!bookings)
+  if (bookings.length === 0)
     return <div className="text-3xl text-center">No bookings Found</div>;
   return (
     <div className="flex flex-col gap-2">
