@@ -5,6 +5,23 @@ import Gallery from "../components/Gallery";
 import AddressLink from "../components/AddressLink";
 import { getPlace } from "../api/place/placeApi";
 import GridSkelton from "../ui/GridSkelton";
+import WifiIcon from "../ui/icons/WifiIcon";
+import TruckIcon from "../ui/icons/TruckIcon";
+import TvIcon from "../ui/icons/TvIcon";
+import FaceSimleIcon from "../ui/icons/FaceSimleIcon";
+import GymIcon from "../ui/icons/GymIcon";
+
+const perksIcon = [
+  { id: "wifi", title: "Wifi", icon: <WifiIcon className={"size-6"} /> },
+  {
+    id: "parking",
+    title: "Free parking",
+    icon: <TruckIcon className={"size-6"} />,
+  },
+  { id: "tv", title: "TV", icon: <TvIcon className={"size-6"} /> },
+  { id: "pets", title: "Pets", icon: <FaceSimleIcon className={"size-6"} /> },
+  { id: "gym", title: "Gym", icon: <GymIcon className={"size-6"} /> },
+];
 
 const PlaceDetails = () => {
   const { id } = useParams();
@@ -16,6 +33,8 @@ const PlaceDetails = () => {
     setLoading(true);
     getPlace(id)
       .then((data) => {
+        console.log(data);
+
         setPlace(data);
       })
       .catch((err) => {
@@ -37,14 +56,36 @@ const PlaceDetails = () => {
       <div className="mt-8 mb-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
         <div>
           <div className="my-4">
-            <h2 className="font-semibold text-2xl">Description</h2>
-            {place.description}
+            <h2 className="font-semibold text-3xl mb-2">Description</h2>
+            <p className="text-lg">{place.description}</p>
           </div>
-          <p className="text-lg font-semibold">Check-in: {place.checkIn} </p>
-          <p className="text-lg font-semibold">Check-out: {place.checkOut}</p>
-          <p className="text-lg font-semibold">
+          <p className="text-xl font-semibold my-2">
+            Check-in: {place.checkIn}{" "}
+          </p>
+          <p className="text-xl font-semibold my-2">
+            Check-out: {place.checkOut}
+          </p>
+          <p className="text-xl font-semibold">
             max number of guests: {place.maxGuests}
           </p>
+          <div className="mt-4">
+            {place.perks.length > 0 && (
+              <>
+                <h2 className="text-xl font-semibold">Perks</h2>
+                <div>
+                  {place.perks.map((perk) => (
+                    <div
+                      key={perk}
+                      className="flex items-center gap-2 text-gray-700 mt-2"
+                    >
+                      {perksIcon.find((p) => p.id === perk)?.icon}
+                      <span>{perksIcon.find((p) => p.id === perk)?.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
         <div>
           <BookingBox place={place} />
@@ -54,9 +95,7 @@ const PlaceDetails = () => {
       {place.extraInfo && (
         <div className="bg-white -mx-8 px-8 py-8 border-t">
           <h2 className="text-2xl font-semibold">Extra Info</h2>
-          <p className="text-sm text-gray-700 leading-5 mt-2 mb-4">
-            {place.extraInfo}
-          </p>
+          <p className="text-gray-700 leading-6 mt-2 mb-4">{place.extraInfo}</p>
         </div>
       )}
     </div>
