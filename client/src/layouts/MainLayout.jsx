@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 const MainLayout = () => {
   return (
     <div>
-      <div className="2xl:container mx-auto py-4 px-8 flex flex-col min-h-screen">
+      <div className="2xl:container mx-auto px-2 py-4 md:px-8 flex flex-col min-h-screen">
         <Header />
         <main className="mt-16 mb-44">
           <Outlet />

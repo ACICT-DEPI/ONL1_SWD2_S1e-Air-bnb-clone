@@ -12,21 +12,21 @@ const NavLinks = () => {
         to={"/account"}
         end
       >
-        <UserIcon className={"size-5"} />
+        <UserIcon className={"size-4 md:size-5"} />
         My profile
       </NavLink>
       <NavLink
         className={({ isActive }) => style(isActive)}
         to={"/account/bookings"}
       >
-        <ListIcon className={"size-5"} />
+        <ListIcon className={"size-4 md:size-5"} />
         My bookings
       </NavLink>
       <NavLink
         className={({ isActive }) => style(isActive)}
         to={"/account/places"}
       >
-        <BuildingIcon className="size-5" />
+        <BuildingIcon className={"size-4 md:size-5"} />
         My accommodations
       </NavLink>
     </nav>
