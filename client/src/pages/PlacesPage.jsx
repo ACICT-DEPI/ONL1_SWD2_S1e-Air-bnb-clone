@@ -34,8 +34,7 @@ const PlacesPage = () => {
   };
 
   if (loading) return <SkeletonLoader />;
-  if (places.length === 0)
-    return <div className="text-3xl text-center">No places, Add one</div>;
+
   return (
     <div>
       <div className="text-center">
@@ -48,6 +47,9 @@ const PlacesPage = () => {
         </Link>
       </div>
       <div className="mt-4 flex flex-col gap-2">
+        {places.length === 0 && (
+          <div className="text-3xl text-center">No places, Add one</div>
+        )}
         {places.length > 0 &&
           places.map((place) => (
             <div
