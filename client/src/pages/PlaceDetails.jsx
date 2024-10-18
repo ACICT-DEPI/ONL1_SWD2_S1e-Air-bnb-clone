@@ -4,23 +4,30 @@ import BookingBox from "../components/BookingBox";
 import Gallery from "../components/Gallery";
 import AddressLink from "../components/AddressLink";
 import { getPlace } from "../api/place/placeApi";
+import GridSkelton from "../ui/GridSkelton";
+import { set } from "date-fns";
 
 const PlaceDetails = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!id) return;
 
+    setLoading(true);
     getPlace(id)
       .then((data) => {
         setPlace(data);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [id]);
-  if (!place) return <div>Loading...</div>;
 
+  if (loading) return <GridSkelton />;
   return (
     <div className="mt-4 bg-gray-100 -mx-8 pt-8 px-8">
       <h1 className="text-3xl">{place.title}</h1>
@@ -45,12 +52,14 @@ const PlaceDetails = () => {
         </div>
       </div>
 
-      <div className="bg-white -mx-8 px-8 py-8 border-t">
-        <h2 className="text-2xl font-semibold">Extra Info</h2>
-        <p className="text-sm text-gray-700 leading-5 mt-2 mb-4">
-          {place.extraInfo}
-        </p>
-      </div>
+      {place.extraInfo && (
+        <div className="bg-white -mx-8 px-8 py-8 border-t">
+          <h2 className="text-2xl font-semibold">Extra Info</h2>
+          <p className="text-sm text-gray-700 leading-5 mt-2 mb-4">
+            {place.extraInfo}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
