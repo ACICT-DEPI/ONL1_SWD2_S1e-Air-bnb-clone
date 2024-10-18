@@ -16,7 +16,6 @@ import toast from "react-hot-toast";
 const PlacesForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [photoLink, setPhotoLink] = useState("");
@@ -53,10 +52,10 @@ const PlacesForm = () => {
   function addPhotoByLink(e) {
     e.preventDefault();
     uploadPhotoByLink(photoLink)
-      .then((res) => {
-        console.log(res);
+      .then((data) => {
+        console.log(data);
 
-        setAddedPhotos([...addedPhotos, res.data]);
+        setAddedPhotos([...addedPhotos, data]);
         setPhotoLink("");
       })
       .catch((err) => {
