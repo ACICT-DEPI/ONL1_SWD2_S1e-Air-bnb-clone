@@ -34,7 +34,7 @@ const BookingBox = ({ place }) => {
         navigate("/account/bookings");
       })
       .catch(() => {
-        toast.error("Error booking place");
+        toast.error("You have to login to book a place");
       });
   };
   return (
