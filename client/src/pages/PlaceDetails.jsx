@@ -5,6 +5,23 @@ import Gallery from "../components/Gallery";
 import AddressLink from "../components/AddressLink";
 import { getPlace } from "../api/place/placeApi";
 import GridSkelton from "../ui/GridSkelton";
+import WifiIcon from "../ui/icons/WifiIcon";
+import TruckIcon from "../ui/icons/TruckIcon";
+import TvIcon from "../ui/icons/TvIcon";
+import FaceSimleIcon from "../ui/icons/FaceSimleIcon";
+import GymIcon from "../ui/icons/GymIcon";
+
+const perksIcon = [
+  { id: "wifi", title: "Wifi", icon: <WifiIcon className={"size-6"} /> },
+  {
+    id: "parking",
+    title: "Free parking",
+    icon: <TruckIcon className={"size-6"} />,
+  },
+  { id: "tv", title: "TV", icon: <TvIcon className={"size-6"} /> },
+  { id: "pets", title: "Pets", icon: <FaceSimleIcon className={"size-6"} /> },
+  { id: "gym", title: "Gym", icon: <GymIcon className={"size-6"} /> },
+];
 
 const PlaceDetails = () => {
   const { id } = useParams();
@@ -16,6 +33,8 @@ const PlaceDetails = () => {
     setLoading(true);
     getPlace(id)
       .then((data) => {
+        console.log(data);
+
         setPlace(data);
       })
       .catch((err) => {

@@ -193,7 +193,7 @@ const PlacesForm = () => {
             required
             type="text"
             id="checkIn"
-            placeholder="14:00"
+            placeholder="14"
             value={checkIn}
             onChange={(e) => setCheckIn(e.target.value)}
           />
@@ -208,7 +208,7 @@ const PlacesForm = () => {
             required
             type="text"
             id="checkOut"
-            placeholder="14:00"
+            placeholder="14"
             value={checkOut}
             onChange={(e) => setCheckOut(e.target.value)}
           />
@@ -238,7 +238,7 @@ const PlacesForm = () => {
             required
             type="text"
             id="price"
-            placeholder="14:00"
+            placeholder="14"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
