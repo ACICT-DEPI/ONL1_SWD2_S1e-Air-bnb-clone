@@ -77,11 +77,33 @@ const PlaceDetails = () => {
                 <td className="border border-gray-300 p-2">{place.checkOut}</td>
               </tr>
               <tr>
-                <td className="border border-gray-300 p-2">Max number of guests</td>
-                <td className="border border-gray-300 p-2">{place.maxGuests}</td>
+                <td className="border border-gray-300 p-2">
+                  Max number of guests
+                </td>
+                <td className="border border-gray-300 p-2">
+                  {place.maxGuests}
+                </td>
               </tr>
             </tbody>
           </table>
+          <div className="mt-4">
+            {place.perks.length > 0 && (
+              <>
+                <h2 className="text-xl font-semibold">Perks</h2>
+                <div>
+                  {place.perks.map((perk) => (
+                    <div
+                      key={perk}
+                      className="flex items-center gap-2 text-gray-700 mt-2"
+                    >
+                      {perksIcon.find((p) => p.id === perk)?.icon}
+                      <span>{perksIcon.find((p) => p.id === perk)?.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
         <div>
           <BookingBox place={place} />
