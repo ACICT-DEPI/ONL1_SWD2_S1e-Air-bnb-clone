@@ -39,8 +39,8 @@ const BookingBox = ({ place }) => {
   };
   return (
     <div className="bg-white shadow p-4 px-6 rounded-2xl">
-      <p className="text-2xl font-semibold mb-2">
-        Price: ${place.price} / per night
+      <p className="text-lg font-semibold mb-2">
+        Price : ${place.price}  Per Night
       </p>
       <form
         className="border rounded-2xl mt-4"

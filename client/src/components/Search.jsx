@@ -3,6 +3,8 @@ const Search = ({ setSearch, search }) => {
     e.preventDefault();
   };
   return (
+    <>
+    <div><h1 className="text-2xl font-bold text-primary">Welcome to Your Home Away From Home!</h1></div>
     <form className="col-span-full" onSubmit={handleSubmit}>
       <div className="w-[80%] md:w-[60%] relative">
         <input
@@ -12,11 +14,12 @@ const Search = ({ setSearch, search }) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button className="bg-primary rounded-2xl px-4 py-2 text-white  absolute right-0 bottom-1.5 ">
+        <button className="bg-primary rounded-r-full px-4 py-2 text-white  absolute right-0 bottom-1.5 ">
           Search
         </button>
       </div>
     </form>
+    </>
   );
 };
 

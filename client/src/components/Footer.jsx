@@ -3,7 +3,7 @@ const Footer = () => {
     <footer className="bg-[#EFF0F2] 2xl:container mx-auto px-2 py-4 md:px-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-6 gap-10">
         <div>
-          <span className="uppercase font-bold text-3xl mb-2 inline-block">
+          <span className="text-primary uppercase font-bold text-3xl mb-2 inline-block">
             core
           </span>
           <p className="text-sm">

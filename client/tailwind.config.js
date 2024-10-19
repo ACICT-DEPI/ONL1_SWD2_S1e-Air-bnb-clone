@@ -11,6 +11,10 @@ export default {
           "100%": { transform: "translateX(100%)" },
         },
       },
+      // Make sure fontFamily is properly placed outside of keyframes
+      fontFamily: {
+        openSans: ['"Open Sans"', 'sans-serif'],
+      },
     },
   },
   plugins: [],

@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className="flex justify-between">
       <Link to="/" className="flex items-center gap-1">
-        <span className="font-bold text-3xl uppercase">Core</span>
+      <span className="font-bold text-4xl uppercase text-primary tracking-wider">Core</span>
       </Link>
 
       {!user && (
