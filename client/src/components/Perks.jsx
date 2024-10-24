@@ -20,7 +20,6 @@ const perks = [
 const Perks = ({ selected, onChange }) => {
   function handleClick(e) {
     const { checked, id } = e.target;
-    console.log(selected);
 
     if (checked) {
       onChange([...selected, id]);

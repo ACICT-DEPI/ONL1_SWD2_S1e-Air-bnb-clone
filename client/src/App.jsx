@@ -17,6 +17,9 @@ import PlaceDetails from "./pages/PlaceDetails.jsx";
 import BookingPage from "./pages/BookingPage.jsx";
 import ProtectedRoute from "./pages/ProtectedRoute.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import About from "./pages/About.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
+import WhyUs from "./pages/WhyUs.jsx";
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
             <Route index element={<IndexPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/why-us" element={<WhyUs />} />
             <Route
               path="account"
               element={

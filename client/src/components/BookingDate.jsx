@@ -15,7 +15,7 @@ const BookingDate = ({ booking, className }) => {
       </div>
       <div className="flex items-center gap-1">
         <CalenderIcon className={"size-4 md:size-6"} />
-        {format(new Date(booking.checkIn), "yyyy-mm-dd")} &rarr;{" "}
+        {format(new Date(booking.checkIn), "yyyy-mm-dd")} &rarr;
         <CalenderIcon className={"size-4 md:size-6"} />
         {format(new Date(booking.checkOut), "yyyy-mm-dd")}
       </div>

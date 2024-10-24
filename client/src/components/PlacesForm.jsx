@@ -1,9 +1,9 @@
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 import Label from "../ui/Label";
-import Input from "../ui/Input";
 import Perks from "../components/Perks";
 import PhotosUploader from "../components/PhotosUploader";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import {
   addPlace,
   editPlace,
@@ -11,241 +11,367 @@ import {
   uploadPhotoByLink,
 } from "../api/place/placeApi";
 import toast from "react-hot-toast";
+import { validateCheckTime } from "../utils/helper";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
+
+const inputStyles = "w-full border my-1 py-2 px-3 rounded-2xl";
+const errorStyles = "text-red-500 text-sm mt-1";
+const errorInputStyles =
+  "border-red-500 focus:border-red-500 focus:ring-red-500";
 
 const PlacesForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [address, setAddress] = useState("");
-  const [photoLink, setPhotoLink] = useState("");
-  const [addedPhotos, setAddedPhotos] = useState([]);
-  const [description, setDescription] = useState("");
-  const [perks, setPerks] = useState([]);
-  const [extraInfo, setExtraInfo] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [maxGuests, setMaxGuests] = useState(1);
-  const [price, setPrice] = useState(100);
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      title: "",
+      address: "",
+      photoLink: "",
+      photos: [],
+      description: "",
+      perks: [],
+      extraInfo: "",
+      checkIn: "",
+      checkOut: "",
+      maxGuests: 1,
+      price: 100,
+    },
+  });
+
+  const photoLink = watch("photoLink");
+  const photos = watch("photos");
 
   useEffect(() => {
     if (!id) return;
 
     getPlace(id)
       .then((data) => {
-        setTitle(data.title);
-        setAddress(data.address);
-        setAddedPhotos(data.photos);
-        setDescription(data.description);
-        setPerks(data.perks);
-        setCheckIn(data.checkIn);
-        setCheckOut(data.checkOut);
-        setMaxGuests(data.maxGuests);
-        setExtraInfo(data.extraInfo);
-        setPrice(data.price);
+        reset({
+          title: data.title,
+          address: data.address,
+          photos: data.photos,
+          description: data.description,
+          perks: data.perks,
+          checkIn: data.checkIn,
+          checkOut: data.checkOut,
+          maxGuests: data.maxGuests,
+          extraInfo: data.extraInfo,
+          price: data.price,
+        });
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
+        toast.error("Failed to load place data");
       });
-  }, [id]);
+  }, [id, reset]);
 
-  function addPhotoByLink(e) {
+  async function addPhotoByLink(e) {
     e.preventDefault();
-    uploadPhotoByLink(photoLink)
-      .then((data) => {
-        console.log(data);
+    if (!photoLink) return;
 
-        setAddedPhotos([...addedPhotos, data]);
-        setPhotoLink("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  function addNewPlace(e) {
-    e.preventDefault();
-    const data = {
-      title,
-      address,
-      photos: addedPhotos,
-      description,
-      perks,
-      extraInfo,
-      checkIn,
-      checkOut,
-      maxGuests,
-      price,
-    };
-    if (id) {
-      // edit
-      editPlace({ ...data, id })
-        .then(() => {
-          toast.success("Place updated");
-          navigate("/account/places");
-        })
-        .catch(() => {
-          toast.error("Error updating place");
-        });
-    } else {
-      // new place
-
-      addPlace(data)
-        .then(() => {
-          toast.success("Place added");
-          navigate("/account/places");
-        })
-        .catch(() => {
-          toast.error("Error adding place");
-        });
+    try {
+      const newPhoto = await uploadPhotoByLink(photoLink);
+      setValue("photos", [...photos, newPhoto]);
+      setValue("photoLink", "");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to upload photo");
     }
   }
 
+  const onSubmit = async (data) => {
+    try {
+      if (data.photos.length === 0) {
+        toast.error("Please add at least one photo");
+        return;
+      }
+
+      if (id) {
+        await editPlace({ ...data, id });
+        toast.success("Place updated successfully");
+      } else {
+        await addPlace(data);
+        toast.success("Place added successfully");
+      }
+      navigate("/account/places");
+    } catch (err) {
+      console.error(err);
+      toast.error(id ? "Error updating place" : "Error adding place");
+    }
+  };
+
   return (
-    <form onSubmit={addNewPlace}>
-      <Label title="Title" htmlFor="title">
-        Title for your place. should be short and catchy as in advertisement
-      </Label>
-      <Input
-        id={"title"}
-        type={"text"}
-        placeholder={"title, for example: My lovely apt"}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-
-      <Label title="Address" htmlFor="address">
-        Address to this place
-      </Label>
-      <Input
-        id={"address"}
-        type={"text"}
-        placeholder={"address"}
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-      />
-
-      <Label title="Photos" htmlFor="photos">
-        more = better
-      </Label>
-      <div className="flex gap-2">
-        <Input
-          type={"text"}
-          placeholder={"Add using a link ....jpg"}
-          value={photoLink}
-          onChange={(e) => setPhotoLink(e.target.value)}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div>
+        <Label title="Title" htmlFor="title">
+          Title for your place. Should be short and catchy as in advertisement
+        </Label>
+        <input
+          id="title"
+          type="text"
+          {...register("title", {
+            required: "Title is required",
+            minLength: {
+              value: 5,
+              message: "Title must be at least 5 characters",
+            },
+            maxLength: {
+              value: 100,
+              message: "Title cannot exceed 100 characters",
+            },
+          })}
+          className={`${inputStyles} ${errors.title ? errorInputStyles : ""}`}
+          placeholder="Title, for example: My lovely apt"
         />
-        <button
-          onClick={addPhotoByLink}
-          className="bg-gray-200 px-4 rounded-2xl text-nowrap"
-        >
-          Add photo
-        </button>
+        {errors.title && (
+          <Error className={errorStyles}>{errors.title.message}</Error>
+        )}
+      </div>
+
+      <div>
+        <Label title="Address" htmlFor="address">
+          Address to this place
+        </Label>
+        <input
+          id="address"
+          type="text"
+          {...register("address", {
+            required: "Address is required",
+            minLength: {
+              value: 5,
+              message: "Address must be at least 5 characters",
+            },
+          })}
+          className={`${inputStyles} ${errors.address ? errorInputStyles : ""}`}
+          placeholder="Address"
+        />
+        {errors.address && (
+          <Error className={errorStyles}>{errors.address.message}</Error>
+        )}
+      </div>
+
+      <div>
+        <Label title="Photos" htmlFor="photos">
+          More = better
+        </Label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            {...register("photoLink", {
+              pattern: {
+                value: /^https?:\/\/.+\.(jpg|jpeg|png|webp)$/i,
+                message: "Please enter a valid image URL",
+              },
+            })}
+            className={`${inputStyles} ${
+              errors.photoLink ? errorInputStyles : ""
+            }`}
+            placeholder="Add using a link ....jpg"
+          />
+          <button
+            onClick={addPhotoByLink}
+            className="bg-gray-200 px-4 rounded-2xl text-nowrap disabled:opacity-50 hover:bg-gray-300 transition-colors"
+            disabled={!photoLink || errors.photoLink}
+          >
+            Add photo
+          </button>
+        </div>
+        {errors.photoLink && (
+          <p className={errorStyles}>{errors.photoLink.message}</p>
+        )}
       </div>
 
       <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-        <PhotosUploader
-          addedPhotos={addedPhotos}
-          setAddedPhotos={setAddedPhotos}
+        <Controller
+          name="photos"
+          control={control}
+          render={({ field }) => (
+            <PhotosUploader
+              addedPhotos={field.value}
+              setAddedPhotos={(photos) => field.onChange(photos)}
+            />
+          )}
         />
       </div>
 
-      <Label title="Description" htmlFor="description">
-        description of the place
-      </Label>
-      <textarea
-        name="description"
-        id="description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-
-      <Label title="Perks" htmlFor="perks">
-        select all the perks of your place
-      </Label>
-
-      <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-        <Perks selected={perks} onChange={setPerks} />
+      <div>
+        <Label title="Description" htmlFor="description">
+          Description of the place
+        </Label>
+        <textarea
+          {...register("description", {
+            required: "Description is required",
+            minLength: {
+              value: 250,
+              message: "Description must be at least 250 characters",
+            },
+          })}
+          className={`${inputStyles} min-h-[150px] ${
+            errors.description ? errorInputStyles : ""
+          }`}
+          rows={5}
+        />
+        {errors.description && (
+          <Error className={errorStyles}>{errors.description.message}</Error>
+        )}
       </div>
 
-      <Label title="Extra Info" htmlFor="info">
-        house rules, etc
-      </Label>
-      <textarea
-        value={extraInfo}
-        onChange={(e) => setExtraInfo(e.target.value)}
-        name="info"
-        id="info"
-      />
+      <div>
+        <Label title="Perks" htmlFor="perks">
+          Select all the perks of your place
+        </Label>
+        <Controller
+          name="perks"
+          control={control}
+          render={({ field }) => (
+            <Perks selected={field.value} onChange={field.onChange} />
+          )}
+        />
+      </div>
 
-      <Label title="Check in&out times, max guests">
-        add check in and out times, remember to have some time window for
-        cleaning the room between guests
-      </Label>
+      <div>
+        <Label title="Extra Info" htmlFor="extraInfo">
+          House rules, etc
+        </Label>
+        <textarea
+          {...register("extraInfo")}
+          className={`${inputStyles} min-h-[100px]`}
+          rows={4}
+        />
+      </div>
 
-      <div className="grid gap-1 sm:grid-cols-2 md:grid-cols-4">
-        <div>
-          <Label
-            className="mt-2 -mb-1 text-base"
-            title="Check in time"
-            htmlFor="checkIn"
-          />
-          <Input
-            required
-            type="text"
-            id="checkIn"
-            placeholder="14"
-            value={checkIn}
-            onChange={(e) => setCheckIn(e.target.value)}
-          />
-        </div>
-        <div>
-          <Label
-            className="mt-2 -mb-1 text-base"
-            title="Check out time"
-            htmlFor="checkOut"
-          />
-          <Input
-            required
-            type="text"
-            id="checkOut"
-            placeholder="14"
-            value={checkOut}
-            onChange={(e) => setCheckOut(e.target.value)}
-          />
-        </div>
-        <div>
-          <Label
-            className="mt-2 -mb-1 text-base"
-            title="Max number of guests"
-            htmlFor="guests"
-          />
-          <Input
-            required
-            type="number"
-            id="guests"
-            placeholder="2"
-            value={maxGuests}
-            onChange={(e) => setMaxGuests(e.target.value)}
-          />
-        </div>
-        <div>
-          <Label
-            className="mt-2 -mb-1 text-base"
-            title="Price per night"
-            htmlFor="price"
-          />
-          <Input
-            required
-            type="text"
-            id="price"
-            placeholder="14"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
+      <div>
+        <Label title="Check in&out times, max guests">
+          Add check in and out times, remember to have some time window for
+          cleaning
+        </Label>
+        <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
+          <div>
+            <Label
+              className="text-base"
+              title="Check in time"
+              htmlFor="checkIn"
+            />
+            <input
+              type="text"
+              {...register("checkIn", {
+                required: "Check-in time is required",
+                validate: validateCheckTime,
+              })}
+              className={`${inputStyles} ${
+                errors.checkIn ? errorInputStyles : ""
+              }`}
+              placeholder="14"
+            />
+            {errors.checkIn && (
+              <Error className={errorStyles}>{errors.checkIn.message}</Error>
+            )}
+          </div>
+          <div>
+            <Label
+              className="text-base"
+              title="Check out time"
+              htmlFor="checkOut"
+            />
+            <input
+              type="text"
+              {...register("checkOut", {
+                required: "Check-out time is required",
+                validate: validateCheckTime,
+              })}
+              className={`${inputStyles} ${
+                errors.checkOut ? errorInputStyles : ""
+              }`}
+              placeholder="11"
+            />
+            {errors.checkOut && (
+              <Error className={errorStyles}>{errors.checkOut.message}</Error>
+            )}
+          </div>
+          <div>
+            <Label
+              className="text-base"
+              title="Max guests"
+              htmlFor="maxGuests"
+            />
+            <input
+              type="number"
+              {...register("maxGuests", {
+                required: "Maximum guests is required",
+                min: {
+                  value: 1,
+                  message: "Must accommodate at least 1 guest",
+                },
+                max: {
+                  value: 20,
+                  message: "Maximum 20 guests allowed",
+                },
+                valueAsNumber: true,
+              })}
+              className={`${inputStyles} ${
+                errors.maxGuests ? errorInputStyles : ""
+              }`}
+              placeholder="2"
+            />
+            {errors.maxGuests && (
+              <Error className={errorStyles}>{errors.maxGuests.message}</Error>
+            )}
+          </div>
+          <div>
+            <Label
+              className="text-base"
+              title="Price per night"
+              htmlFor="price"
+            />
+            <input
+              type="number"
+              {...register("price", {
+                required: "Price is required",
+                min: {
+                  value: 1,
+                  message: "Price must be greater than 0",
+                },
+                max: {
+                  value: 10000,
+                  message: "Price cannot exceed 10000",
+                },
+                valueAsNumber: true,
+              })}
+              className={`${inputStyles} ${
+                errors.price ? errorInputStyles : ""
+              }`}
+              placeholder="100"
+            />
+            {errors.price && (
+              <Error className={errorStyles}>{errors.price.message}</Error>
+            )}
+          </div>
         </div>
       </div>
 
-      <button className="primary my-4">Save</button>
+      <button
+        type="submit"
+        className="primary w-full disabled:opacity-50 hover:opacity-90 transition-opacity"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <span className="w-full flex items-center justify-center">
+            <Spinner className={"size-6"} />
+          </span>
+        ) : (
+          "Save"
+        )}
+      </button>
     </form>
   );
 };

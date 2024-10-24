@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="bg-[#EFF0F2] 2xl:container mx-auto px-2 py-4 md:px-8">
@@ -16,8 +18,12 @@ const Footer = () => {
           <span className="uppercase font-semibold text-xl mb-2 inline-block">
             Company
           </span>
-          <p className="mb-2">About us</p>
-          <p>Contact us</p>
+          <Link to={"/about"} className="mb-2 block">
+            About us
+          </Link>
+          <Link to={"/contact-us"} className="mb-2 block">
+            Contact us
+          </Link>
         </div>
         <div>
           <span className="uppercase font-semibold text-xl mb-2 inline-block">
@@ -25,7 +31,9 @@ const Footer = () => {
           </span>
           <p className="mb-2">Find a Property</p>
           <p className="mb-2">Host a Property</p>
-          <p>Why us?</p>
+          <Link to={"/why-us"} className="mb-2 block">
+            Why us?
+          </Link>
         </div>
         <div>
           <span className="uppercase font-semibold text-xl mb-2 inline-block">

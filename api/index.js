@@ -29,10 +29,6 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log("connected to db");
 });
 
-app.get("/test", (req, res) => {
-  res.json("test ok");
-});
-
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   try {
