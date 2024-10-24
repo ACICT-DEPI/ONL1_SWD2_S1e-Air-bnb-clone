@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import BookingDate from "../components/BookingDate";
 import { deleteBooking, getBookings } from "../api/booking/bookingApi";
 import SkeletonLoader from "../ui/SkeletonLoader";
 import toast from "react-hot-toast";
@@ -11,6 +13,8 @@ const BookingsPage = () => {
   useEffect(() => {
     getBookings()
       .then((data) => {
+        console.log(data);
+
         setBookings(data);
       })
       .catch((err) => {
@@ -41,8 +45,12 @@ const BookingsPage = () => {
       {bookings.length > 0 &&
         bookings.map((booking) => (
           <>
-            {booking.place?.length > 0 ? (
-              <Booking handleDelete={handleDelete} booking={booking} />
+            {booking.place ? (
+              <Booking
+                key={booking._id}
+                booking={booking}
+                handleDelete={handleDelete}
+              />
             ) : (
               <p className="text-xl">
                 The place was deleted so the Booking also deleted and we give

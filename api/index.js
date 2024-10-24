@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const app = express();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -11,6 +10,8 @@ const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
+
+const app = express();
 require("dotenv").config();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
