@@ -61,10 +61,11 @@ const Content = () => {
 const TeamSection = () => {
   const teamMembers = [
     { name: "Yousef Hamed", image: "/Yousef.png" },
-    { name: "Ahmed Hamdy", image: "https://via.placeholder.com/120" },
-    { name: "Ahmed Zain", image: "https://via.placeholder.com/120" },
+    { name: "Ahmed Hamdy", image: "/hamdy.jpg" },
+    { name: "Ahmed Zain", image: "/zain.jpg" },
     { name: "Ahmed Mohamed", image: "https://via.placeholder.com/120" },
     { name: "Mostafa ElDiesel", image: "/mostafa.png" },
+    { name: "Mostafa Montaser", image: "/montasr.png" },
   ];
 
   return (
